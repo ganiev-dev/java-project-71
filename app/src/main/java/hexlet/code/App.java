@@ -4,9 +4,9 @@ import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
-
-import java.io.File;
 import java.util.concurrent.Callable;
+
+import static hexlet.code.Diff.isDifferent;
 
     @Command(
             name = "gendiff",
@@ -30,19 +30,19 @@ import java.util.concurrent.Callable;
                 description = "path to first file",
                 paramLabel = "filepath1"
         )
-        private String file1;
+        private String filepath1;
 
         @Parameters(
                 index = "1",
                 description = "path to second file",
                 paramLabel = "filepath2"
         )
-        private String file2;
+        private String filepath2;
 
-        @Override
-        public Integer call() { //логика приложения
-            System.out.println("Hello world!");
-            return 0; // код завершения
+        @Override // точка входа
+        public Integer call() throws Exception {
+                isDifferent(filepath1, filepath2);
+            return 0;
         }
 
         public static void main(String[] args) {
