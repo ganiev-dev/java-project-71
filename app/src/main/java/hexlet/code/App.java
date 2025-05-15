@@ -6,9 +6,10 @@ import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 import java.util.concurrent.Callable;
 
-import static hexlet.code.Diff.isDifferent;
+import static hexlet.code.Diffs.genDifferents;
 
-    @Command(
+
+@Command(
             name = "gendiff",
             version = "1.0",
             mixinStandardHelpOptions = true, //автосправка
@@ -41,7 +42,7 @@ import static hexlet.code.Diff.isDifferent;
 
         @Override // точка входа
         public Integer call() throws Exception {
-                isDifferent(filepath1, filepath2);
+            genDifferents(filepath1, filepath2);
             return 0;
         }
 
