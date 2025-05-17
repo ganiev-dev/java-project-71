@@ -1,7 +1,8 @@
 plugins {
     id("java")
     id("com.github.ben-manes.versions") version "0.52.0"
-//    id("io.freefair.lombok") version "8.4"
+    id("org.sonarqube") version "6.2.0.5505"
+    checkstyle
     application
 }
 
@@ -16,12 +17,20 @@ repositories {
     mavenCentral()
 }
 
+sonar {
+    properties {
+        property("sonar.projectKey", "ganiev-dev_java-project-71")
+        property("sonar.organization", "ganiev-dev")
+        property("sonar.host.url", "https://sonarcloud.io")
+    }
+}
+
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
+    implementation ("org.junit.jupiter:junit-jupiter-api:5.5.1")
     implementation ("info.picocli:picocli:4.7.7")
     annotationProcessor ("info.picocli:picocli-codegen:4.7.7")
-    implementation ("com.fasterxml.jackson.core:jackson-databind:2.13.1")
+    implementation ("com.fasterxml.jackson.core:jackson-databind:2.13.4.2")
 }
 
 tasks.test {

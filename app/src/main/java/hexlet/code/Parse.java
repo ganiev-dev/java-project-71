@@ -11,6 +11,7 @@ public class Parse {
         var path = Paths.get(filepath); //Получаем объект Path из пути в параметрах
         var reader = Files.newBufferedReader(path); //Создаем новый ридер из файла
         ObjectMapper objectMapper = new ObjectMapper(); //маппер джексона
-        return objectMapper.readValue(reader, new TypeReference<Map<String, Object>>() {}); //Распарсиваем в мапу и возвращаем
+        return objectMapper.readValue(reader,
+                new TypeReference<Map<String, Object>>() { }); //Распарсиваем в мапу и возвращаем
     }
 }

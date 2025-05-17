@@ -1,0 +1,7 @@
+{"version": 2, "width": 80, "height": 24, "timestamp": 1747303554, "env": {"SHELL": "/bin/bash", "TERM": "xterm-256color"}}
+[0.032707, "o", "\u001b[?2004h\u001b]0;igel@igel-CREF-XX: ~/java-project-71/app\u0007\u001b[01;32migel@igel-CREF-XX\u001b[00m:\u001b[01;34m~/java-project-71/app\u001b[00m$ "]
+[2.027355, "o", "./build/install/app/bin/app src/main/resources/file1.json src/main/resources/file2.json"]
+[3.135301, "o", "\r\n\u001b[?2004l\r"]
+[3.67459, "o", "- follow: false\r\n  host: hexlet.io\r\n- proxy: 123.234.53.22\r\n- timeout: 50\r\n+ timeout: 20\r\n+ verbose: true\r\n"]
+[3.68935, "o", "\u001b[?2004h\u001b]0;igel@igel-CREF-XX: ~/java-project-71/app\u0007\u001b[01;32migel@igel-CREF-XX\u001b[00m:\u001b[01;34m~/java-project-71/app\u001b[00m$ "]
+[6.257394, "o", "\u001b[?2004l\r\r\nexit\r\n"]

@@ -1,5 +1,4 @@
 package hexlet.code;
-
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -7,7 +6,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Diffs {
-
     public static void genDifferents(String path1, String path2) throws Exception {
         var file1 = Parse.getData(path1);
         var file2 = Parse.getData(path2);
