@@ -23,6 +23,8 @@ sonar {
         property("sonar.projectKey", "ganiev-dev_java-project-71")
         property("sonar.organization", "ganiev-dev")
         property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.junit.reportPaths", "build/test-results/test")
+        property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
 
     }
 }
@@ -38,7 +40,7 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
-    finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
+    finalizedBy(tasks.jacocoTestReport)
 }
 
 tasks.jacocoTestReport {
@@ -48,10 +50,12 @@ jacoco {
     toolVersion = "0.8.13"
     reportsDirectory = layout.buildDirectory.dir("customJacocoReportDir")
 }
+
 tasks.jacocoTestReport {
+    dependsOn(tasks.test) // tests are required to run before generating the report
     reports {
-        xml.required = false
-        csv.required = false
-        html.outputLocation = layout.buildDirectory.dir("jacocoHtml")
+        xml.required.set(true)
+        xml.outputLocation.set(layout.buildDirectory.file("reports/jacoco/test/jacocoTestReport.xml"))
+        html.required.set(true)
     }
 }
