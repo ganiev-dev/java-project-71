@@ -1,5 +1,9 @@
+import hexlet.code.Diffs;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.nio.file.NoSuchFileException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -7,6 +11,7 @@ import java.util.Map;
 
 
 import static hexlet.code.Diffs.genDifferents;
+import static hexlet.code.Diffs.toPrint;
 import static hexlet.code.Parse.getData;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -60,6 +65,30 @@ public class SimpleTest {
         System.out.println(expected);
 
         var actual = genDifferents(jsonPath1, jsonPath2);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testDiffsOutput() throws Exception {
+
+        // Первый вывод
+        ByteArrayOutputStream out1 = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out1));
+        toPrint(genDifferents(jsonPath1, jsonPath2));
+        String actual = out1.toString();
+
+        // Второй вывод (ожидаемый)
+        ByteArrayOutputStream out2 = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out2));
+        System.out.println("- follow: false");
+        System.out.println("  host: hexlet.io");
+        System.out.println("- proxy: 123.234.53.22");
+        System.out.println("- timeout: 50");
+        System.out.println("+ timeout: 20");
+        System.out.println("+ verbose: true");
+
+        String expected = out2.toString();
+
         assertEquals(expected, actual);
     }
 
