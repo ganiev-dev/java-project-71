@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Diffs {
-    public static void genDifferents(String path1, String path2) throws Exception {
+    public static LinkedHashMap<String, Object> genDifferents(String path1, String path2) throws Exception {
         var file1 = Parse.getData(path1);
         var file2 = Parse.getData(path2);
         var diffmap = new HashMap<String, Object>();
@@ -33,13 +33,15 @@ public class Diffs {
             }
         }
 
-        var sortedMap = diffmap.entrySet()
+        return diffmap.entrySet()
                 .stream()
                 .sorted(Comparator.comparing(entry -> entry.getKey().charAt(2))) // 3ий символ ключа
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
                         (e1, e2) -> e1, LinkedHashMap::new));
 
-        for (var entry : sortedMap.entrySet()) {
+    }
+    public static void toPrint(LinkedHashMap<String, Object> map) {
+        for (var entry: map.entrySet()) {
             System.out.println(entry.getKey() + ": " + entry.getValue());
         }
     }

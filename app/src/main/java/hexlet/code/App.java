@@ -39,7 +39,7 @@ public class App implements Callable<Integer> {
 
     @Override // точка входа
     public Integer call() throws Exception {
-        genDifferents(filepath1, filepath2);
+        Diffs.toPrint(genDifferents(filepath1, filepath2));
         return 0;
     }
     public static void main(String[] args) {
