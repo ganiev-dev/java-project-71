@@ -18,10 +18,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class SimpleTest {
     private static String jsonPath1;
     private static String jsonPath2;
-    private static HashMap<String, Object> map;
 
     @BeforeAll
-    public static void init() {
+    static void init() {
         jsonPath1 = "src/test/resources/file1.json";
         jsonPath2 = "src/test/resources/file2.json";
     }
