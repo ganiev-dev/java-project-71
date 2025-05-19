@@ -23,12 +23,14 @@ sonar {
         property("sonar.projectKey", "ganiev-dev_java-project-71")
         property("sonar.organization", "ganiev-dev")
         property("sonar.host.url", "https://sonarcloud.io")
+
     }
 }
 
 dependencies {
     testImplementation ("org.junit.jupiter:junit-jupiter-api:5.9.3")  // API для тестов
     testRuntimeOnly ("org.junit.jupiter:junit-jupiter-engine:5.9.3") // Движок для запуска
+    testRuntimeOnly ("org.junit.platform:junit-platform-launcher")
     implementation ("info.picocli:picocli:4.7.7")
     annotationProcessor ("info.picocli:picocli-codegen:4.7.7")
     implementation ("com.fasterxml.jackson.core:jackson-databind:2.13.4.2")
