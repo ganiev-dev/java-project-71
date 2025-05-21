@@ -5,7 +5,7 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 import java.util.concurrent.Callable;
-import static hexlet.code.Diffs.genDifferents;
+import static hexlet.code.Diffs.getDifferents;
 import static hexlet.code.Diffs.toPrint;
 
 
@@ -40,7 +40,7 @@ public class App implements Callable<Integer> {
 
     @Override // точка входа
     public Integer call() throws Exception {
-        toPrint(genDifferents(filepath1, filepath2));
+        toPrint(getDifferents(filepath1, filepath2));
         return 0;
     }
     public static void main(String[] args) {

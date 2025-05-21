@@ -35,6 +35,8 @@ dependencies {
     implementation ("info.picocli:picocli:4.7.7")
     annotationProcessor ("info.picocli:picocli-codegen:4.7.7")
     implementation ("com.fasterxml.jackson.core:jackson-databind:2.13.4.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.1")
+    implementation ("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.15.0")
 }
 
 tasks.test {
