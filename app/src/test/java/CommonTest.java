@@ -8,14 +8,14 @@ import java.nio.file.NoSuchFileException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
 import static hexlet.code.Diffs.getDifferents;
 import static hexlet.code.Diffs.toPrint;
-
 import static hexlet.code.Parse.getData;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class CommonTest {
+class CommonTest {
     @Test
     void testNonExistedFile() {
         assertThrows(NoSuchFileException.class, () -> {
