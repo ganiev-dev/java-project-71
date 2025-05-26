@@ -1,5 +1,7 @@
 package hexlet.code;
 
+import hexlet.code.formatters.Formatter;
+import hexlet.code.formatters.FormatterFactory;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -40,7 +42,10 @@ public class App implements Callable<Integer> {
 
     @Override // точка входа
     public Integer call() throws Exception {
-        toPrint(getDifferents(filepath1, filepath2));
+        var differentsBetweenFiles = getDifferents(filepath1, filepath2);
+        Formatter formatter = FormatterFactory.getFormatter(format);
+        var formatedResult = formatter.processDiffMap(differentsBetweenFiles);
+        toPrint(formatedResult);
         return 0;
     }
     public static void main(String[] args) {

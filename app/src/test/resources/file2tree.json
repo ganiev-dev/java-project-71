@@ -1,0 +1,10 @@
+{
+  "string": "Another value",
+  "integer": 200,
+  "boolean": true,
+  "array": [2, 7, 8, 6],
+  "obj1": {
+    "nestedKey": "value",
+    "isNested": true
+  }
+}

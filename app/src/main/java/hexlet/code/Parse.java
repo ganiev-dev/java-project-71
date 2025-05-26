@@ -8,10 +8,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Parse {
-    public static Map<String, Object> getData(String filepath) throws IOException, IllegalStateException {
+    public static Map<String, Object> parse(String filepath) throws IOException, IllegalStateException {
         var path = Paths.get(filepath); //Получаем объект Path из пути в параметрах
 
         try (var reader = Files.newBufferedReader(path)) { //Создаем новый ридер из файла
@@ -24,7 +25,7 @@ public class Parse {
             };
 
             return mapper.readValue(reader,
-                    new TypeReference<Map<String, Object>>() { }); //Распарсиваем в мапу и возвращаем
+                    new TypeReference<HashMap<String, Object>>() { }); //Распарсиваем в мапу и возвращаем
         }
     }
 

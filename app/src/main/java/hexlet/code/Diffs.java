@@ -1,49 +1,65 @@
 package hexlet.code;
 
-import java.util.Comparator;
+import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.Comparator;
+
 
 public class Diffs {
-    public static Map<String, Object> getDifferents(String path1, String path2) throws Exception {
-        var file1 = Parse.getData(path1);
-        var file2 = Parse.getData(path2);
-        var diffmap = new HashMap<String, Object>();
+    public static Map<String, ArrayList<String>> getDifferents(String path1, String path2) throws Exception {
+        var file1 = Parse.parse(path1);
+        var file2 = Parse.parse(path2);
+        var diffmap = new HashMap<String, ArrayList<String>>();
 
-        for (var entry: file1.entrySet()) {
+        // Первая мапа
+        for (var entry : file1.entrySet()) {
             var key = entry.getKey();
-            var value = entry.getValue();
+            var value1 = Objects.toString(entry.getValue(), "null");
+            var value2 = file2.containsKey(key)
+                    ? Objects.toString(file2.get(key), "null")
+                    : null;
 
-            if (!file2.containsKey(key)) { // Если ключа из 1 нет в 2
-                diffmap.put("- " + key, value);
-            } else if (value.equals(file2.get(key))) { // иначе Если значение из 1 равно значению из 2
-                diffmap.put("  " + key, value);
-            } else { // Иначе если значение из 1 не равно значению из 2
-                diffmap.put("- " + key, value);
-                diffmap.put("+ " + key, file2.get(key));
+            if (!file2.containsKey(key)) {
+                diffmap.put(key, newArrList("deleted", value1));
+            } else if (value1.equals(value2)) {
+                diffmap.put(key, newArrList("equal", value1));
+            } else {
+                diffmap.put(key, newArrList("changed", value1, value2));
             }
         }
 
-        for (var entry: file2.entrySet()) { // Если ключ из 2 не содержится в 1
+        // Вторая мапа
+        for (var entry : file2.entrySet()) {
             var key = entry.getKey();
-            var value = entry.getValue();
             if (!file1.containsKey(key)) {
-                diffmap.put("+ " + key, value);
+                var value = Objects.toString(entry.getValue(), "null");
+                diffmap.put(key, newArrList("added", value));
             }
         }
 
         return diffmap.entrySet()
                 .stream()
-                .sorted(Comparator.comparing(entry -> entry.getKey().charAt(2))) // 3ий символ ключа
+                .sorted(Comparator.comparing(Map.Entry::getKey))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
                         (e1, e2) -> e1, LinkedHashMap::new));
 
     }
-    public static void toPrint(Map<String, Object> map) {
+    public static void toPrint(Map<String, String> map) {
+        StringBuilder str = new StringBuilder();
         for (var entry: map.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
+            str.append(entry.getKey() + ": " + entry.getValue() + "\n");
         }
+        str.insert(0, "{\n");
+        str.insert(str.length(), "}");
+
+        System.out.println(str);
+    }
+    public static ArrayList<String> newArrList(String... str) {
+        return new ArrayList<String>(Arrays.asList(str));
     }
 }
