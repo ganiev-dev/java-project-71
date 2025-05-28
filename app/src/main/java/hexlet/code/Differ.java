@@ -10,12 +10,17 @@ import java.util.stream.Collectors;
 import static hexlet.code.formatters.Formatter.getFormatter;
 
 public class Differ {
+    
     public static String generate(String path1, String path2, String formatName) throws Exception {
         var diff = getDifferents(path1, path2);
         var formatter = getFormatter(formatName);
         return formatter.formatView(diff);
     }
-
+    public static String generate(String path1, String path2) throws Exception {
+        var diff = getDifferents(path1, path2);
+        var formatter = getFormatter("Stylish");
+        return formatter.formatView(diff);
+    }
     public static Map<String, ArrayList<Object>> getDifferents(String path1, String path2) throws Exception {
         var file1 = Parse.parse(path1);
         var file2 = Parse.parse(path2);
