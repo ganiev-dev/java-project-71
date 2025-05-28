@@ -21,6 +21,7 @@ public class Parse {
             ObjectMapper mapper = switch (format) { //Фабрика мапперов :)
                 case "json" ->  new ObjectMapper();
                 case "yaml" -> new YAMLMapper();
+                case "yml" -> new YAMLMapper();
                 default -> throw new IllegalStateException("Формат файла не поддерживается: " + format);
             };
 
