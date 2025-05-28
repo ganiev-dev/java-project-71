@@ -7,8 +7,8 @@ public final class Stylish implements Format {
 
     @Override
     public String formatView(Map<String, ArrayList<Object>> map) {
-        final int COUNT2 = 2;
-        final int COUNT4 = 4;
+        final int count2 = 2;
+        final int count4 = 4;
 
         StringBuilder resultStr = new StringBuilder("{\n");
         for (var entry : map.entrySet()) {
@@ -18,17 +18,17 @@ public final class Stylish implements Format {
 
             switch (keyDiff) {
                 case "equal":
-                    resultStr.append(" ".repeat(COUNT4) + key + ": " + value.get(1) + "\n");
+                    resultStr.append(" ".repeat(count4) + key + ": " + value.get(1) + "\n");
                     break;
                 case "removed":
-                    resultStr.append(" ".repeat(COUNT2) + "- " + key  + ": " +  value.get(1) + "\n");
+                    resultStr.append(" ".repeat(count2) + "- " + key  + ": " +  value.get(1) + "\n");
                     break;
                 case "added":
-                    resultStr.append(" ".repeat(COUNT2) + "+ " + key  + ": " +  value.get(1) + "\n");
+                    resultStr.append(" ".repeat(count2) + "+ " + key  + ": " +  value.get(1) + "\n");
                     break;
                 case "updated":
-                    resultStr.append(" ".repeat(COUNT2) + "- " + key  + ": " +  value.get(1) + "\n");
-                    resultStr.append(" ".repeat(COUNT2) + "+ " + key  + ": " +  value.get(2) + "\n");
+                    resultStr.append(" ".repeat(count2) + "- " + key  + ": " +  value.get(1) + "\n");
+                    resultStr.append(" ".repeat(count2) + "+ " + key  + ": " +  value.get(2) + "\n");
                     break;
                 default:
                     throw new RuntimeException("Неизвестный тип : " + keyDiff);
