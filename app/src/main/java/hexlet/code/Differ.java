@@ -18,7 +18,7 @@ public class Differ {
     }
     public static String generate(String path1, String path2) throws Exception {
         var diff = getDifferents(path1, path2);
-        var formatter = getFormatter("Stylish");
+        var formatter = getFormatter("stylish");
         return formatter.formatView(diff);
     }
     public static Map<String, ArrayList<Object>> getDifferents(String path1, String path2) throws Exception {
