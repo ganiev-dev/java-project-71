@@ -13,7 +13,7 @@ public class Differ {
     public static String generate(String path1, String path2, String formatName) throws Exception {
         var diff = getDifferents(path1, path2);
         var formatter = getFormatter(formatName);
-        return formatter.processDiffMap(diff);
+        return formatter.formatView(diff);
     }
 
     public static Map<String, ArrayList<Object>> getDifferents(String path1, String path2) throws Exception {
@@ -27,11 +27,11 @@ public class Differ {
             Object value1 = entry.getValue();
             Object value2 = file2.get(key);
 
-            if (!file2.containsKey(key)) {
+            if (!file2.containsKey(key)) { //Если ключа нет во второй мапе
                 diffmap.put(key, new ArrayList<>(Arrays.asList("removed", value1)));
-            } else if (Objects.deepEquals(value1, value2)) {
+            } else if (Objects.equals(value1, value2)) { // если значения по ключу равны в обеих
                 diffmap.put(key, new ArrayList<>(Arrays.asList("equal", value1)));
-            } else {
+            } else {  // если значения по ключу не равны в обеих
                 diffmap.put(key, new ArrayList<>(Arrays.asList("updated", value1, value2)));
             }
         }
@@ -39,19 +39,15 @@ public class Differ {
         // мапа2
         for (Map.Entry<String, Object> entry : file2.entrySet()) {
             String key = entry.getKey();
-            if (!file1.containsKey(key)) {
+            if (!file1.containsKey(key)) { //если ключа из 2 мапы нет в 1
                 diffmap.put(key, new ArrayList<>(Arrays.asList("added", entry.getValue())));
             }
         }
 
         return diffmap.entrySet().stream()
-                .sorted(Map.Entry.comparingByKey())
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (e1, e2) -> e1,
-                        LinkedHashMap::new
-                ));
+                .sorted(Map.Entry.comparingByKey()) //Сортируем по ключу
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
 
     }
 }

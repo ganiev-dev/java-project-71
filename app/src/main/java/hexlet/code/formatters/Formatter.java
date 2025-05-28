@@ -7,6 +7,8 @@ public class Formatter {
                 return new Stylish();
             case "plain":
                 return new Plain();
+            case "json":
+                return new Json();
             default: throw new IllegalArgumentException("Такого форматера нет: " + formatter);
         }
     }

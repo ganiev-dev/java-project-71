@@ -1,3 +1,4 @@
+import com.fasterxml.jackson.core.JsonProcessingException;
 import hexlet.code.formatters.Stylish;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -66,22 +67,6 @@ class ComplStrTest {
     }
 
     @Test
-    void plainTest() {
-        Map<String, ArrayList<Object>> input = new LinkedHashMap<>();
-        input.put("unchanged", new ArrayList<>(List.of("equal", "value")));
-        input.put("removed", new ArrayList<>(List.of("removed", "old")));
-        input.put("added", new ArrayList<>(List.of("added", 42)));
-        input.put("updated", new ArrayList<>(List.of("updated", false, true)));
-
-        String expected = "Property 'removed' was removed\n"
-                + "Property 'added' was added with value 42\n"
-                + "Property 'updated' was updated. From false to true\n";
-
-        var formatter = getFormatter("plain");
-        assertEquals(expected, formatter.processDiffMap(input));
-    }
-
-    @Test
     public void stylishTest() {
         Stylish stylish = new Stylish();
 
@@ -91,8 +76,7 @@ class ComplStrTest {
         inputMap.put("removed", new ArrayList<>(Arrays.asList("removed", "oldValue")));
         inputMap.put("new", new ArrayList<>(Arrays.asList("added", "newValue")));
         inputMap.put("changed", new ArrayList<>(Arrays.asList("updated", "oldValue", "newValue")));
-        inputMap.put("nested", new ArrayList<>(Arrays.asList("updated",
-                Arrays.asList(1, 2, 3),
+        inputMap.put("nested", new ArrayList<>(Arrays.asList("updated", Arrays.asList(1, 2, 3),
                 Arrays.asList(4, 5, 6))));
 
         String expected = "{\n"
@@ -105,7 +89,43 @@ class ComplStrTest {
                 + "  + nested: [4, 5, 6]\n"
                 + "}";
 
-        String actual = stylish.processDiffMap(inputMap);
+        String actual = stylish.formatView(inputMap);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void plainTest() throws JsonProcessingException {
+        Map<String, ArrayList<Object>> input = new LinkedHashMap<>();
+        input.put("unchanged", new ArrayList<>(List.of("equal", "value")));
+        input.put("removed", new ArrayList<>(List.of("removed", "old")));
+        input.put("added", new ArrayList<>(List.of("added", 42)));
+        input.put("updated", new ArrayList<>(List.of("updated", false, true)));
+
+        String expected = "Property 'removed' was removed\n"
+                + "Property 'added' was added with value 42\n"
+                + "Property 'updated' was updated. From false to true\n";
+
+        var formatter = getFormatter("plain");
+        assertEquals(expected, formatter.formatView(input));
+    }
+
+    @Test
+    void jsonTest() throws JsonProcessingException {
+        Map<String, ArrayList<Object>> input = new LinkedHashMap<>();
+        input.put("unchanged", new ArrayList<>(List.of("equal", "value")));
+        input.put("removed", new ArrayList<>(List.of("removed", "old")));
+        input.put("added", new ArrayList<>(List.of("added", 42)));
+        input.put("updated", new ArrayList<>(List.of("updated", false, true)));
+
+        String expected = "{\n"
+            + "  \"unchanged\" : [ \"equal\", \"value\" ],\n"
+            + "  \"removed\" : [ \"removed\", \"old\" ],\n"
+            + "  \"added\" : [ \"added\", 42 ],\n"
+            + "  \"updated\" : [ \"updated\", false, true ]\n"
+            + "}";
+
+        var formatter = getFormatter("json");
+        var actual = formatter.formatView(input);
         assertEquals(expected, actual);
     }
 }

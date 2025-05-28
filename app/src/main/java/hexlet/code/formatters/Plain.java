@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class Plain implements Format {
     @Override
-    public String processDiffMap(Map<String, ArrayList<Object>> map) {
+    public String formatView(Map<String, ArrayList<Object>> map) {
 
         StringBuilder resultStr = new StringBuilder();
 
