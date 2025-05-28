@@ -20,6 +20,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ComplStrTest {
+    static final int ONE = 1;
+    static final int TWO = 2;
+    static final int THREE = 3;
+    static final int FOUR = 4;
+    static final int FIVE = 5;
+    static final int SIX = 6;
+    static final int FORTYTWO = 42;
+
     @ParameterizedTest
     @CsvSource({
         "src/test/resources/fake.json",
@@ -36,8 +44,9 @@ class ComplStrTest {
         "src/test/resources/testMap.json"
     })
     void parseCreateMapTest(String path) throws Exception {
+
         Map<String, Object> expected = new HashMap<>();
-        ArrayList<Integer> list = new ArrayList<>(Arrays.asList(1, 2, 3, 4));
+        ArrayList<Integer> list = new ArrayList<>(Arrays.asList(ONE, TWO, THREE, FOUR));
         expected.put("string", "Some value");
         expected.put("integer", 200);
         expected.put("boolean", true);
@@ -76,8 +85,8 @@ class ComplStrTest {
         inputMap.put("removed", new ArrayList<>(Arrays.asList("removed", "oldValue")));
         inputMap.put("new", new ArrayList<>(Arrays.asList("added", "newValue")));
         inputMap.put("changed", new ArrayList<>(Arrays.asList("updated", "oldValue", "newValue")));
-        inputMap.put("nested", new ArrayList<>(Arrays.asList("updated", Arrays.asList(1, 2, 3),
-                Arrays.asList(4, 5, 6))));
+        inputMap.put("nested", new ArrayList<>(Arrays.asList("updated", Arrays.asList(ONE, TWO, THREE),
+                Arrays.asList(FOUR, FIVE, SIX))));
 
         String expected = "{\n"
                 + "    unchanged: value\n"
@@ -98,12 +107,12 @@ class ComplStrTest {
         Map<String, ArrayList<Object>> input = new LinkedHashMap<>();
         input.put("unchanged", new ArrayList<>(List.of("equal", "value")));
         input.put("removed", new ArrayList<>(List.of("removed", "old")));
-        input.put("added", new ArrayList<>(List.of("added", 42)));
+        input.put("added", new ArrayList<>(List.of("added", FORTYTWO)));
         input.put("updated", new ArrayList<>(List.of("updated", false, true)));
 
         String expected = "Property 'removed' was removed\n"
-                + "Property 'added' was added with value 42\n"
-                + "Property 'updated' was updated. From false to true\n";
+                + "Property 'added' was added with value: 42\n"
+                + "Property 'updated' was updated. From false to true";
 
         var formatter = getFormatter("plain");
         assertEquals(expected, formatter.formatView(input));
@@ -114,7 +123,7 @@ class ComplStrTest {
         Map<String, ArrayList<Object>> input = new LinkedHashMap<>();
         input.put("unchanged", new ArrayList<>(List.of("equal", "value")));
         input.put("removed", new ArrayList<>(List.of("removed", "old")));
-        input.put("added", new ArrayList<>(List.of("added", 42)));
+        input.put("added", new ArrayList<>(List.of("added", FORTYTWO)));
         input.put("updated", new ArrayList<>(List.of("updated", false, true)));
 
         String expected = "{\n"

@@ -5,10 +5,7 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 import java.util.concurrent.Callable;
-
 import static hexlet.code.Differ.generate;
-import static hexlet.code.formatters.Formatter.getFormatter;
-
 
 @Command(
     name = "gendiff",
@@ -18,12 +15,13 @@ import static hexlet.code.formatters.Formatter.getFormatter;
     )
 
 public class App implements Callable<Integer> {
+
     @Option(
         names = {"-f", "--format"},
         description = "output format [default: stylish]",
         paramLabel = "format",
         defaultValue = "stylish")
-        String format;
+        private String format;
 
     @Parameters(
         index = "0",

@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 import static hexlet.code.formatters.Formatter.getFormatter;
 
 public class Differ {
-    
     public static String generate(String path1, String path2, String formatName) throws Exception {
         var diff = getDifferents(path1, path2);
         var formatter = getFormatter(formatName);

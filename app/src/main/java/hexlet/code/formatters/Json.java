@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class Json implements Format {
+public final class Json implements Format {
     @Override
     public String formatView(Map<String, ArrayList<Object>> map) throws JsonProcessingException {
         ObjectWriter writer = new ObjectMapper().writer(new DefaultPrettyPrinter());
