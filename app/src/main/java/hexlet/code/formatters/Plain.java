@@ -38,6 +38,7 @@ public class Plain implements Format {
                     throw new RuntimeException("Неизвестный тип : " + keyDiff);
             }
         }
+        resultStr.deleteCharAt(resultStr.length() - 1);
         return resultStr.toString();
 
     }
