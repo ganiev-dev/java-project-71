@@ -25,7 +25,7 @@ public class Plain implements Format {
                 case "added":
                     resultStr.append("Property "
                             + key
-                            + " was added with value "
+                            + " was added with value: "
                             + formatValue(value.get(1)) + "\n");
                     break;
                 case "updated":
