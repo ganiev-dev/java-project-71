@@ -27,6 +27,7 @@ class ComplStrTest {
     static final int FIVE = 5;
     static final int SIX = 6;
     static final int FORTYTWO = 42;
+    static final int TWOHUNDRED = 200;
 
     @ParameterizedTest
     @CsvSource({
@@ -48,7 +49,7 @@ class ComplStrTest {
         Map<String, Object> expected = new HashMap<>();
         ArrayList<Integer> list = new ArrayList<>(Arrays.asList(ONE, TWO, THREE, FOUR));
         expected.put("string", "Some value");
-        expected.put("integer", 200);
+        expected.put("integer", TWOHUNDRED);
         expected.put("boolean", true);
         expected.put("array", list);
         expected.put("null", null);
