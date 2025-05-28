@@ -1,39 +1,38 @@
 package hexlet.code.formatters;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Stylish implements Formatter {
+public class Stylish implements Format {
 
     @Override
-    public Map<String, String> processDiffMap(Map<String, ArrayList<String>> map) {
-        LinkedHashMap<String, String> result = new LinkedHashMap<>();
-
+    public String processDiffMap(Map<String, ArrayList<Object>> map) {
+        StringBuilder resultStr = new StringBuilder("{\n");
         for (var entry : map.entrySet()) {
             var key = entry.getKey();
-            var keyDiff = entry.getValue().getFirst();
+            var keyDiff = entry.getValue().getFirst().toString();
             var value = entry.getValue();
 
             switch (keyDiff) {
                 case "equal":
-                    result.put(" ".repeat(4) + key, value.get(1));
+                    resultStr.append(" ".repeat(4) + key + ": " + value.get(1) + "\n");
                     break;
-                case "deleted":
-                    result.put(" ".repeat(2) + "- " + key, value.get(1));
+                case "removed":
+                    resultStr.append(" ".repeat(2) + "- " + key  + ": " +  value.get(1) + "\n");
                     break;
                 case "added":
-                    result.put(" ".repeat(2) + "+ " + key, value.get(1));
+                    resultStr.append(" ".repeat(2) + "+ " + key  + ": " +  value.get(1) + "\n");
                     break;
-                case "changed":
-                    result.put(" ".repeat(2) + "- " + key, value.get(1));
-                    result.put(" ".repeat(2) + "+ " + key, value.get(2));
+                case "updated":
+                    resultStr.append(" ".repeat(2) + "- " + key  + ": " +  value.get(1) + "\n");
+                    resultStr.append(" ".repeat(2) + "+ " + key  + ": " +  value.get(2) + "\n");
                     break;
                 default:
-                    System.out.println("Я никогда не произойду");
+                    throw new RuntimeException("Неизвестный тип : " + keyDiff);
             }
         }
-        return result;
+        resultStr.append("}");
+        return resultStr.toString();
     }
 
 }

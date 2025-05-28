@@ -1,20 +1,20 @@
+import hexlet.code.formatters.Stylish;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.nio.file.NoSuchFileException;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.List;
 
-import static hexlet.code.Diffs.getDifferents;
-import static hexlet.code.Diffs.toPrint;
+
+import static hexlet.code.Differ.getDifferents;
 import static hexlet.code.Parse.parse;
-import static hexlet.code.formatters.FormatterFactory.getFormatter;
+import static hexlet.code.formatters.Formatter.getFormatter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -52,65 +52,61 @@ class ComplStrTest {
         "src/test/resources/file1tree.json, src/test/resources/file2tree.json"
     })
     void diffsToMapTest(String path1, String path2) throws Exception {
-        Map<String, Object> expected = new LinkedHashMap<>();
-        expected.put("array", Arrays.asList("changed", "[1, 2, 3, 4]", "[2, 7, 8, 6]"));
-        expected.put("boolean", Arrays.asList("equal", "true"));
-        expected.put("integer", Arrays.asList("equal", "200"));
-        expected.put("null", Arrays.asList("deleted", "null"));
-        expected.put("obj1", Arrays.asList("added", "{nestedKey=value, isNested=true}")); // JSON-строка
-        expected.put("string", Arrays.asList("changed", "Some value", "Another value"));
-        System.out.println(expected);
+        Map<String, Object> inputMap = new LinkedHashMap<>();
+        inputMap.put("array", Arrays.asList("updated", "[1, 2, 3, 4]", "[2, 7, 8, 6]"));
+        inputMap.put("boolean", Arrays.asList("equal", "true"));
+        inputMap.put("integer", Arrays.asList("equal", "200"));
+        inputMap.put("null", Arrays.asList("removed", "null"));
+        inputMap.put("obj1", Arrays.asList("added", "{nestedKey=value, isNested=true}")); // JSON-строка
+        inputMap.put("string", Arrays.asList("updated", "Some value", "Another value"));
+        var expected = inputMap.toString();
+        var actual = getDifferents(path1, path2).toString();
 
-        var actual = getDifferents(path1, path2);
         assertEquals(expected, actual);
     }
+
     @Test
-    void stylishTest() {
-        Map<String, ArrayList<String>> inputMap = new LinkedHashMap<>();
-        inputMap.put("array", new ArrayList<>(Arrays.asList("changed", "[1, 2, 3, 4]", "[2, 7, 8, 6]")));
-        inputMap.put("boolean", new ArrayList<>(Arrays.asList("equal", "true")));
+    void plainTest() {
+        Map<String, ArrayList<Object>> input = new LinkedHashMap<>();
+        input.put("unchanged", new ArrayList<>(List.of("equal", "value")));
+        input.put("removed", new ArrayList<>(List.of("removed", "old")));
+        input.put("added", new ArrayList<>(List.of("added", 42)));
+        input.put("updated", new ArrayList<>(List.of("updated", false, true)));
 
-        Map<String, String> expected = new LinkedHashMap<>();
-        expected.put("  - array", "[1, 2, 3, 4]");
-        expected.put("  + array", "[2, 7, 8, 6]");
-        expected.put("    boolean", "true");
+        String expected = "Property 'removed' was removed\n"
+                + "Property 'added' was added with value 42\n"
+                + "Property 'updated' was updated. From false to true\n";
 
-        var formatter = getFormatter("stylish");
-        Map<String, String> actual = formatter.processDiffMap(inputMap);
-
-        assertEquals(expected, actual);
+        var formatter = getFormatter("plain");
+        assertEquals(expected, formatter.processDiffMap(input));
     }
 
-    @ParameterizedTest
-    @CsvSource({
-        "src/test/resources/file1tree.json, src/test/resources/file2tree.json"
-    })
-    void diffsOutputTest(String path1, String path2) throws Exception {
-        // Первый вывод
-        Map<String, ArrayList<String>> diffMap = new LinkedHashMap<>();
-        diffMap.put("array", new ArrayList<>(Arrays.asList("changed", "[1, 2, 3, 4]", "[2, 7, 8, 6]")));
-        diffMap.put("boolean", new ArrayList<>(Arrays.asList("equal", "true")));
-        var formatter = getFormatter("stylish");
-        var formatedResult = formatter.processDiffMap(diffMap);
+    @Test
+    public void stylishTest() {
+        Stylish stylish = new Stylish();
 
-        ByteArrayOutputStream out1 = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out1));
+        // Подготовка тестовых данных
+        Map<String, ArrayList<Object>> inputMap = new LinkedHashMap<>();
+        inputMap.put("unchanged", new ArrayList<>(Arrays.asList("equal", "value")));
+        inputMap.put("removed", new ArrayList<>(Arrays.asList("removed", "oldValue")));
+        inputMap.put("new", new ArrayList<>(Arrays.asList("added", "newValue")));
+        inputMap.put("changed", new ArrayList<>(Arrays.asList("updated", "oldValue", "newValue")));
+        inputMap.put("nested", new ArrayList<>(Arrays.asList("updated",
+                Arrays.asList(1, 2, 3),
+                Arrays.asList(4, 5, 6))));
 
-        toPrint(formatedResult);
-        String actual = out1.toString();
+        String expected = "{\n"
+                + "    unchanged: value\n"
+                + "  - removed: oldValue\n"
+                + "  + new: newValue\n"
+                + "  - changed: oldValue\n"
+                + "  + changed: newValue\n"
+                + "  - nested: [1, 2, 3]\n"
+                + "  + nested: [4, 5, 6]\n"
+                + "}";
 
-        // Второй вывод (ожидаемый)
-        ByteArrayOutputStream out2 = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out2));
-
-        System.out.println("{");
-        System.out.println("  - array: [1, 2, 3, 4]");
-        System.out.println("  + array: [2, 7, 8, 6]");
-        System.out.println("    boolean: true");
-        System.out.println("}");
-
-        String expected = out2.toString();
-
+        String actual = stylish.processDiffMap(inputMap);
         assertEquals(expected, actual);
     }
 }
+

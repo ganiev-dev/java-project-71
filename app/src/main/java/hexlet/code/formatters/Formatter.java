@@ -1,7 +1,15 @@
 package hexlet.code.formatters;
-import java.util.ArrayList;
-import java.util.Map;
 
-public interface Formatter {
-    Map<String, String> processDiffMap(Map<String, ArrayList<String>> map);
+public class Formatter {
+    public static Format getFormatter(String formatter) {
+        switch (formatter) {
+            case "stylish":
+                return new Stylish();
+            case "plain":
+                return new Plain();
+            default: throw new IllegalArgumentException("Такого форматера нет: " + formatter);
+        }
+    }
+
+
 }
