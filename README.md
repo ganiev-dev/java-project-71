@@ -17,12 +17,11 @@
 
 ## Использование
 	$ gendiff [-hV] [-f=format] filepath1 filepath2
-filepath1	Путь к 1 файлу
-filepath2	Путь ко 2 файлу
-  -f, --format	Выбор форматтера. По умолчанию *stylish.*
-  -h, --help	Справка.
-  -V, --version	Номер версии.
-
+	filepath1	Путь к 1 файлу
+	filepath2	Путь ко 2 файлу
+	-f, --format	Выбор форматтера. По умолчанию *stylish.*
+	-h, --help	Справка.
+	-V, --version	Номер версии.
 
 
 Указываются пути к двум json или yaml файлам. Утилита их сранивает и выдает отформатированный результат. Если необходим форматтер *plain*, он указывается через ключ *-f "plain"*.
@@ -33,12 +32,15 @@ filepath2	Путь ко 2 файлу
 
 # Примеры работы
 Нахождение различий между двумя json файлами 
-Нахождение и вывод различий между древовидными json файлами и вывод результата в различных форматах.
+
 [![asciicast](https://asciinema.org/a/yz0WFg6GGXzF8pb0ty2rCc7kx.svg)](https://asciinema.org/a/yz0WFg6GGXzF8pb0ty2rCc7kx)
 
 Вывод различий двух древовидных json файлов
+
 [![asciicast](https://asciinema.org/a/4KhZfanaDw2EAMKz52XAyfMFH.svg)](https://asciinema.org/a/4KhZfanaDw2EAMKz52XAyfMFH)
+
 Сравнение и вывод двух древовидных json файлов в формате json
+
 [![asciicast](https://asciinema.org/a/oXwgY4cMNz06F3CkcitaBnaqE.svg)](https://asciinema.org/a/oXwgY4cMNz06F3CkcitaBnaqE)
 
-Учебный проект школы программирования ["Hexlet"](https://ru.hexlet.io/?ref=252944).
+Сделано в рамках обучение в школе программирования ["Hexlet"](https://ru.hexlet.io/).
