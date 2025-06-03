@@ -31,7 +31,7 @@
 
 
 # Примеры работы
-Нахождение различий между двумя json файлами 
+Нахождение различий между двумя json файлами, формат по умолчанию.
 
 [![asciicast](https://asciinema.org/a/yz0WFg6GGXzF8pb0ty2rCc7kx.svg)](https://asciinema.org/a/yz0WFg6GGXzF8pb0ty2rCc7kx)
 
@@ -43,4 +43,4 @@
 
 [![asciicast](https://asciinema.org/a/oXwgY4cMNz06F3CkcitaBnaqE.svg)](https://asciinema.org/a/oXwgY4cMNz06F3CkcitaBnaqE)
 
-Сделано в рамках обучение в школе программирования ["Hexlet"](https://ru.hexlet.io/).
+Сделано в рамках обучения в школе программирования ["Hexlet"](https://ru.hexlet.io/).

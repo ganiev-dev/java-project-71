@@ -1,0 +1,9 @@
+{
+    unchanged: value
+  - removed: oldValue
+  + new: newValue
+  - changed: oldValue
+  + changed: newValue
+  - nested: [1, 2, 3]
+  + nested: [4, 5, 6]
+}

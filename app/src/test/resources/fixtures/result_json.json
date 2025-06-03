@@ -1,0 +1,6 @@
+{
+  "unchanged" : [ "equal", "value" ],
+  "removed" : [ "removed", "old" ],
+  "added" : [ "added", 42 ],
+  "updated" : [ "updated", false, true ]
+}

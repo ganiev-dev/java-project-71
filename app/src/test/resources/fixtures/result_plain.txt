@@ -1,0 +1,3 @@
+Property 'removed' was removed
+Property 'added' was added with value: 42
+Property 'updated' was updated. From false to true

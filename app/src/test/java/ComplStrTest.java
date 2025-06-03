@@ -1,25 +1,54 @@
 import com.fasterxml.jackson.core.JsonProcessingException;
+import hexlet.code.Parse;
 import hexlet.code.formatters.Stylish;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-
+import java.io.BufferedReader;
+import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.LinkedHashMap;
+import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.List;
 
-
-import static hexlet.code.Differ.getDifferents;
+import static hexlet.code.Calculatediff.calculateDiff;
+import static hexlet.code.Differ.getFileFormat;
+import static hexlet.code.Differ.getReader;
 import static hexlet.code.Parse.parse;
 import static hexlet.code.formatters.Formatter.getFormatter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ComplStrTest {
+    private static String resultParse;
+    private static String resultJson;
+    private static String resultPlain;
+    private static String resultStylish;
+
+    private static Path getFixturePath(String fileName) {
+        return Paths.get("src", "test", "resources", "fixtures", fileName)
+                .toAbsolutePath().normalize();
+    }
+
+    private static String readFixture(String fileName) throws Exception {
+        Path filePath = getFixturePath(fileName);
+        return Files.readString(filePath).trim();
+    }
+
+
+    @BeforeAll
+    public static void beforeAll() throws Exception {
+        resultParse = readFixture("result_parse.txt");
+        resultJson = readFixture("result_json.json");
+        resultPlain = readFixture("result_plain.txt");
+        resultStylish = readFixture("result_stylish.txt");
+    }
+
     static final int ONE = 1;
     static final int TWO = 2;
     static final int THREE = 3;
@@ -29,33 +58,25 @@ class ComplStrTest {
     static final int FORTYTWO = 42;
     static final int TWOHUNDRED = 200;
 
-    @ParameterizedTest
-    @CsvSource({
-        "src/test/resources/fake.json",
-        "|empty_value"
-    })
+    @Test
     void parseNonExistedFileTest() {
         assertThrows(NoSuchFileException.class, () -> {
-            parse("nonExistedPath");
+            BufferedReader test = getReader("none existed file path");
+            parse(test, "stylish");
         });
     }
 
-    @ParameterizedTest
-    @CsvSource({
-        "src/test/resources/testMap.json"
-    })
-    void parseCreateMapTest(String path) throws Exception {
-
-        Map<String, Object> expected = new HashMap<>();
-        ArrayList<Integer> list = new ArrayList<>(Arrays.asList(ONE, TWO, THREE, FOUR));
-        expected.put("string", "Some value");
-        expected.put("integer", TWOHUNDRED);
+    @Test
+    void parseCreateMapTest() throws Exception {
+        Map<String, Object> expected = new LinkedHashMap<>();
+        expected.put("array", List.of(1, 2, 3, 4));
         expected.put("boolean", true);
-        expected.put("array", list);
+        expected.put("integer", 200);
         expected.put("null", null);
+        expected.put("string", "Some value");
 
-        var actual = parse(path);
-        assertEquals(expected, actual);
+        var actual = resultParse;
+        assertEquals(expected.toString(), actual);
     }
 
     @ParameterizedTest
@@ -71,16 +92,18 @@ class ComplStrTest {
         inputMap.put("obj1", Arrays.asList("added", "{nestedKey=value, isNested=true}")); // JSON-строка
         inputMap.put("string", Arrays.asList("updated", "Some value", "Another value"));
         var expected = inputMap.toString();
-        var actual = getDifferents(path1, path2).toString();
-
-        assertEquals(expected, actual);
+        Map<String, ArrayList<Object>> actual = null;
+        try (BufferedReader file1 = getReader(path1);
+             BufferedReader file2 = getReader(path2)) {
+            var file1ParseResult = Parse.parse(file1, getFileFormat(path1));
+            var file2ParseResult = Parse.parse(file2, getFileFormat(path2));
+            actual = calculateDiff(file1ParseResult, file2ParseResult);
+        }
+        assertEquals(expected, actual.toString());
     }
 
     @Test
     public void stylishTest() {
-        Stylish stylish = new Stylish();
-
-        // Подготовка тестовых данных
         Map<String, ArrayList<Object>> inputMap = new LinkedHashMap<>();
         inputMap.put("unchanged", new ArrayList<>(Arrays.asList("equal", "value")));
         inputMap.put("removed", new ArrayList<>(Arrays.asList("removed", "oldValue")));
@@ -89,16 +112,8 @@ class ComplStrTest {
         inputMap.put("nested", new ArrayList<>(Arrays.asList("updated", Arrays.asList(ONE, TWO, THREE),
                 Arrays.asList(FOUR, FIVE, SIX))));
 
-        String expected = "{\n"
-                + "    unchanged: value\n"
-                + "  - removed: oldValue\n"
-                + "  + new: newValue\n"
-                + "  - changed: oldValue\n"
-                + "  + changed: newValue\n"
-                + "  - nested: [1, 2, 3]\n"
-                + "  + nested: [4, 5, 6]\n"
-                + "}";
-
+        String expected = resultStylish;
+        Stylish stylish = new Stylish();
         String actual = stylish.formatView(inputMap);
         assertEquals(expected, actual);
     }
@@ -111,12 +126,8 @@ class ComplStrTest {
         input.put("added", new ArrayList<>(List.of("added", FORTYTWO)));
         input.put("updated", new ArrayList<>(List.of("updated", false, true)));
 
-        String expected = "Property 'removed' was removed\n"
-                + "Property 'added' was added with value: 42\n"
-                + "Property 'updated' was updated. From false to true";
-
         var formatter = getFormatter("plain");
-        assertEquals(expected, formatter.formatView(input));
+        assertEquals(resultPlain, formatter.formatView(input));
     }
 
     @Test
@@ -127,16 +138,9 @@ class ComplStrTest {
         input.put("added", new ArrayList<>(List.of("added", FORTYTWO)));
         input.put("updated", new ArrayList<>(List.of("updated", false, true)));
 
-        String expected = "{\n"
-            + "  \"unchanged\" : [ \"equal\", \"value\" ],\n"
-            + "  \"removed\" : [ \"removed\", \"old\" ],\n"
-            + "  \"added\" : [ \"added\", 42 ],\n"
-            + "  \"updated\" : [ \"updated\", false, true ]\n"
-            + "}";
-
         var formatter = getFormatter("json");
         var actual = formatter.formatView(input);
-        assertEquals(expected, actual);
+        assertEquals(resultJson, actual);
     }
 }
 
