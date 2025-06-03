@@ -69,9 +69,9 @@ class ComplStrTest {
     @Test
     void parseCreateMapTest() throws Exception {
         Map<String, Object> expected = new LinkedHashMap<>();
-        expected.put("array", List.of(1, 2, 3, 4));
+        expected.put("array", List.of(ONE, TWO, THREE, FOUR));
         expected.put("boolean", true);
-        expected.put("integer", 200);
+        expected.put("integer", TWOHUNDRED);
         expected.put("null", null);
         expected.put("string", "Some value");
 
