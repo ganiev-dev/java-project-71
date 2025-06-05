@@ -32,7 +32,7 @@ public final class Plain implements Format {
                     resultStr.append("Property "
                             + key + " was updated. From "
                             + formatValue(value.get(1)) + " to "
-                            +  formatValue(value.get(2)) + "\n");
+                            + formatValue(value.get(2)) + "\n");
                     break;
                 default:
                     throw new RuntimeException("Неизвестный тип : " + keyDiff);
@@ -40,26 +40,20 @@ public final class Plain implements Format {
         }
         resultStr.deleteCharAt(resultStr.length() - 1);
         return resultStr.toString();
-
     }
 
     private static String formatValue(Object value) {
         if (value == null) {
             return "null";
-        }
-
-        var classname = value.getClass().getName();
-        if (classname.equals("java.util.ArrayList")
-                || classname.equals("java.util.LinkedHashMap")
+        } else if (value.getClass().getName().equals("java.util.ArrayList")
+                || value.getClass().getName().equals("java.util.LinkedHashMap")
                 || value.getClass().isArray()) {
             return "[complex value]";
-        }
-
-        if (value instanceof String) {
+        } else if (value instanceof String) {
             return "'" + value + "'";
+        } else {
+            return value.toString();
         }
-        return value.toString();
     }
-
 }
 

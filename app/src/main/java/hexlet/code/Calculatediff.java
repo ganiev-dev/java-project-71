@@ -1,39 +1,38 @@
 package hexlet.code;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Objects;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.LinkedHashMap;
 
 public class Calculatediff {
     public static Map<String, ArrayList<Object>>
-        calculateDiff(Map<String, Object> file1, Map<String, Object> file2) throws Exception {
-
+        calculateDiff(Map<String, Object> data1, Map<String, Object> data2) throws Exception {
+        Set<String> keysSet = Stream.concat(data1.keySet().stream(), data2.keySet().stream())
+                .collect(Collectors.toSet());
         var diffmap = new HashMap<String, ArrayList<Object>>();
 
-        // мапа1
-        for (Map.Entry<String, Object> entry : file1.entrySet()) {
-            String key = entry.getKey();
-            Object value1 = entry.getValue();
-            Object value2 = file2.get(key);
+        for (String k : keysSet) {
+            Object value1 = data1.get(k);
+            Object value2 = data2.get(k);
 
-            if (!file2.containsKey(key)) { //Если ключа нет во второй мапе
-                diffmap.put(key, new ArrayList<>(Arrays.asList("removed", value1)));
-            } else if (Objects.equals(value1, value2)) { // если значения по ключу равны в обеих
-                diffmap.put(key, new ArrayList<>(Arrays.asList("equal", value1)));
-            } else {  // если значения по ключу не равны в обеих
-                diffmap.put(key, new ArrayList<>(Arrays.asList("updated", value1, value2)));
-            }
-        }
-
-        // мапа2
-        for (Map.Entry<String, Object> entry : file2.entrySet()) {
-            String key = entry.getKey();
-            if (!file1.containsKey(key)) { //если ключа из 2 мапы нет в 1
-                diffmap.put(key, new ArrayList<>(Arrays.asList("added", entry.getValue())));
+            if (!data1.containsKey(k) && data2.containsKey(k)) {
+                //ADDED
+                diffmap.put(k, new ArrayList<>(Arrays.asList("added", value2)));
+            } else if (data1.containsKey(k) && !data2.containsKey(k)) {
+                //REMOVED
+                diffmap.put(k, new ArrayList<>(Arrays.asList("removed", value1)));
+            } else if (Objects.equals(value1, value2)) {
+                //UNCHANGED
+                diffmap.put(k, new ArrayList<>(Arrays.asList("equal", value1)));
+            } else {
+                //UPDATED
+                diffmap.put(k, new ArrayList<>(Arrays.asList("updated", value1, value2)));
             }
         }
 
