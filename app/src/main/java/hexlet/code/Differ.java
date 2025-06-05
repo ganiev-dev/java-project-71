@@ -25,6 +25,10 @@ public class Differ {
     }
 
     private static Path getFilePath(String fileName) {
+        Path path = Paths.get(fileName);
+        if (path.isAbsolute()) {
+            return path.normalize();
+        }
         return Paths.get("src", "main", "resources", fileName)
                 .toAbsolutePath().normalize();
     }
