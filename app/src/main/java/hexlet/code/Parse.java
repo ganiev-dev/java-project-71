@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Parse {
-    public static Map<String, Object> parse(String fileContent, String mapper) throws
+    public static Map<String, Object> parse(String content, String mapper) throws
             IOException, IllegalStateException {
 
         ObjectMapper typeOfmapper = switch (mapper) {
@@ -19,7 +19,7 @@ public class Parse {
             default -> throw new IllegalStateException("Illegal type of mapper: " + mapper);
         };
 
-        return typeOfmapper.readValue(fileContent,
+        return typeOfmapper.readValue(content,
             new TypeReference<HashMap<String, Object>>() { }); //Распарсиваем в мапу и возвращаем
     }
 }

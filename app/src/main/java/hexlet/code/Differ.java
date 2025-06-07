@@ -10,15 +10,15 @@ import static hexlet.code.Parse.parse;
 public class Differ {
     public static String generate(String path1, String path2, String formatterType) throws Exception {
 
-        var fileContent1 = readFile(path1);
-        var fileContent2 = readFile(path2);
+        var content1 = readFile(path1);
+        var content2 = readFile(path2);
         var mapper = getFileFormat(path1);
         if (!getFileFormat(path1).equals(getFileFormat(path2))) {
             throw new IllegalArgumentException("Diff types of file");
         }
 
-        var fileParseResult1 = parse(fileContent1, mapper);
-        var fileParseResult2 = parse(fileContent2, mapper);
+        var fileParseResult1 = parse(content1, mapper);
+        var fileParseResult2 = parse(content2, mapper);
 
         var diff = calculateDiff(fileParseResult1, fileParseResult2);
         return getFormatter(formatterType).formatView(diff);
