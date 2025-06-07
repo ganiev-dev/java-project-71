@@ -1,11 +1,11 @@
 package hexlet.code.formatters;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public final class Plain implements Format {
     @Override
-    public String formatView(Map<String, ArrayList<Object>> map) {
+    public String formatView(Map<String, List<Object>> map) {
 
         StringBuilder resultStr = new StringBuilder();
 

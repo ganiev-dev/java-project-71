@@ -1,12 +1,12 @@
 package hexlet.code.formatters;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public final class Stylish implements Format {
 
     @Override
-    public String formatView(Map<String, ArrayList<Object>> map) {
+    public String formatView(Map<String, List<Object>> map) {
         final int count2 = 2;
         final int count4 = 4;
 

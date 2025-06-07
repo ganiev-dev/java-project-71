@@ -12,6 +12,4 @@ public class Formatter {
             default: throw new IllegalArgumentException("Такого форматера нет: " + formatter);
         }
     }
-
-
 }

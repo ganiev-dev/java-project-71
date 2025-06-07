@@ -1,17 +1,18 @@
 package hexlet.code;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.Arrays;
-import java.util.Objects;
 import java.util.LinkedHashMap;
 
 public class Calculatediff {
-    public static Map<String, ArrayList<Object>>
+    public static Map<String, List<Object>>
         calculateDiff(Map<String, Object> data1, Map<String, Object> data2) throws Exception {
         Set<String> keysSet = Stream.concat(data1.keySet().stream(), data2.keySet().stream())
                 .collect(Collectors.toSet());

@@ -54,28 +54,50 @@ class ComplStrTest {
         var actual = getTestStr("file1tree.json", "file2tree.json");
         assertEquals(expected, actual);
     }
-    @Test
-    void diffsYmlCalcTest() throws Exception {
-        var expected = resultCalculate;
-        var actual = getTestStr("file1.yml", "file2.yml");
-        assertEquals(expected, actual);
-    }
 
     @Test
-    public void stylishTest() throws Exception {
-        var actual = getTestStr("file1tree.json", "file2tree.json", "stylish");
+    public void jsonToDefaultTest() throws Exception {
+        var actual = getTestStr("file1tree.json", "file2tree.json");
         assertEquals(resultStylish, actual);
     }
 
     @Test
-    void plainTest() throws Exception {
+    void jsonToStylishTest() throws Exception {
+        var actual = getTestStr("file1tree.json", "file2tree.json", "stylish");
+        assertEquals(resultStylish, actual);
+    }
+    @Test
+    void jsonToPlainTest() throws Exception {
         var actual = getTestStr("file1tree.json", "file2tree.json", "plain");
         assertEquals(resultPlain, actual);
     }
 
     @Test
-    void jsonTest() throws Exception {
+    void jsonToJsonTest() throws Exception {
         var actual = getTestStr("file1tree.json", "file2tree.json", "json");
+        assertEquals(resultJson, actual);
+    }
+
+    @Test
+    public void ymlToDefaultTest() throws Exception {
+        var actual = getTestStr("file1tree.yml", "file2tree.yml");
+        assertEquals(resultStylish, actual);
+    }
+
+    @Test
+    public void ymlToStylishTest() throws Exception {
+        var actual = getTestStr("file1tree.yml", "file2tree.yml", "stylish");
+        assertEquals(resultStylish, actual);
+    }
+    @Test
+    void ymlToPlainTest() throws Exception {
+        var actual = getTestStr("file1tree.yml", "file2tree.yml", "plain");
+        assertEquals(resultPlain, actual);
+    }
+
+    @Test
+    void ymlToJsonTest() throws Exception {
+        var actual = getTestStr("file1tree.yml", "file2tree.yml", "json");
         assertEquals(resultJson, actual);
     }
 }
