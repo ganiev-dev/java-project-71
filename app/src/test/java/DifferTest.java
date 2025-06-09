@@ -6,11 +6,11 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static hexlet.code.Parse.parse;
+import static hexlet.code.Parser.parse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class ComplStrTest {
+class DifferTest {
     private static String resultCalculate;
     private static String resultJson;
     private static String resultPlain;

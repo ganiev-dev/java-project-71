@@ -37,11 +37,12 @@ public final class App implements Callable<Integer> {
         )
         private String filepath2;
 
-    @Override // точка входа
-    public Integer call() throws Exception {
+    @Override
+    public Integer call() throws Exception { //логика
         System.out.println(generate(filepath1, filepath2, format));
         return 0;
     }
+
     public static void main(String[] args) {
         int exitCode = new CommandLine(new App()).execute(args);
         System.exit(exitCode);

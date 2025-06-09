@@ -3,9 +3,9 @@ package hexlet.code;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import static hexlet.code.Calculatediff.calculateDiff;
+import static hexlet.code.CalculatorOfDiff.calculateDiff;
 import static hexlet.code.formatters.Formatter.getFormatter;
-import static hexlet.code.Parse.parse;
+import static hexlet.code.Parser.parse;
 
 public class Differ {
     public static String generate(String path1, String path2, String formatterType) throws Exception {

@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Parse {
+public class Parser {
     public static Map<String, Object> parse(String content, String mapper) throws
             IOException, IllegalStateException {
 

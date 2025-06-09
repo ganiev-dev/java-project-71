@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.LinkedHashMap;
 
-public class Calculatediff {
+public class CalculatorOfDiff {
     public static Map<String, List<Object>>
         calculateDiff(Map<String, Object> data1, Map<String, Object> data2) throws Exception {
         Set<String> keysSet = Stream.concat(data1.keySet().stream(), data2.keySet().stream())
