@@ -1,5 +1,8 @@
 package hexlet.code.formatters;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,9 +48,9 @@ public final class Plain implements Format {
     private static String formatValue(Object value) {
         if (value == null) {
             return "null";
-        } else if (value.getClass().getName().equals("java.util.ArrayList")
-                || value.getClass().getName().equals("java.util.LinkedHashMap")
-                || value.getClass().isArray()) {
+        } else if (value instanceof ArrayList<?>
+                || value instanceof LinkedHashMap
+                || value instanceof Array) {
             return "[complex value]";
         } else if (value instanceof String) {
             return "'" + value + "'";
